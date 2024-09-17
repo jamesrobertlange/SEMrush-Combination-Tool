@@ -1,16 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
   const [brandedTerms, setBrandedTerms] = useState('');
   const [clientName, setClientName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isLoading) {
+      interval = setInterval(() => {
+        setTimeElapsed((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      setTimeElapsed(0);
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setTimeElapsed(0);
 
     const formData = new FormData();
     files.forEach((file) => formData.append('files', file));
@@ -24,20 +38,22 @@ export default function Home() {
       });
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = response.headers.get('Content-Disposition')?.split('filename=')[1].replace(/"/g, '') || 'processed_data.csv';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
+        const { csvData, fileName } = await response.json();
+        const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       } else {
         console.error('Error processing CSV');
+        alert('An error occurred while processing the CSV. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('An error occurred. Please try again.');
     }
 
     setIsLoading(false);
@@ -89,6 +105,17 @@ export default function Home() {
           {isLoading ? 'Processing...' : 'Process CSV'}
         </button>
       </form>
+      {isLoading && (
+        <div className="mt-4">
+          <div className="flex items-center justify-center space-x-2">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <span>Processing... Time elapsed: {timeElapsed} seconds</span>
+          </div>
+          <p className="mt-2 text-center text-sm text-gray-500">
+            This may take a few minutes depending on the size of your CSV files.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

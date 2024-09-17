@@ -34,11 +34,10 @@ export async function POST(req: NextRequest) {
     const formattedDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
     const fileName = `${clientName.toLowerCase().replace(/\s+/g, '_')}-${formattedDate}-semrush.csv`;
 
-    return new NextResponse(csvData, {
+    return new NextResponse(JSON.stringify({ csvData, fileName }), {
       status: 200,
       headers: {
-        'Content-Type': 'text/csv',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Type': 'application/json',
       },
     });
   } catch (error) {
@@ -46,7 +45,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Error processing CSV' }, { status: 500 });
   }
 }
-
 async function processCsvFiles(files: File[]): Promise<CsvRow[]> {
   let combinedData: CsvRow[] = [];
 
