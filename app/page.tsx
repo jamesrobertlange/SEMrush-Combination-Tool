@@ -35,27 +35,27 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  const processCsvFiles = async (files: File[], brandedTerms: string[]): Promise<CsvRow[]> => {
+  const processCsvFiles = async (files: File[]): Promise<CsvRow[]> => {
     let combinedData: CsvRow[] = [];
-
+  
     for (const file of files) {
       const text = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => resolve(e.target?.result as string);
         reader.readAsText(file);
       });
-
+  
       const { data } = await new Promise<Papa.ParseResult<CsvRow>>((resolve) => {
         Papa.parse(text, {
           header: true,
           complete: (results) => resolve(results),
         });
       });
-
+  
       combinedData = combinedData.concat(data);
       setProgress((prev) => prev + (1 / files.length) * 50); // First 50% is for reading files
     }
-
+  
     return combinedData;
   };
 
@@ -106,19 +106,19 @@ export default function Home() {
     setIsLoading(true);
     setTimeElapsed(0);
     setProgress(0);
-
+  
     const brandedTermsList = brandedTerms.split(',').map(term => term.trim().toLowerCase());
-
+  
     try {
-      const combinedData = await processCsvFiles(files, brandedTermsList);
+      const combinedData = await processCsvFiles(files);
       setProgress(50); // Reading files complete
-
+  
       const processedData = processData(combinedData, brandedTermsList);
       setProgress(75); // Processing complete
-
+  
       const csvData = Papa.unparse(processedData);
       setProgress(90); // CSV generation complete
-
+  
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -135,10 +135,10 @@ export default function Home() {
       console.error('Error:', error);
       alert('An error occurred while processing the CSV files. Please try again.');
     }
-
+  
     setIsLoading(false);
   };
-
+  
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">CSV Processor</h1>
