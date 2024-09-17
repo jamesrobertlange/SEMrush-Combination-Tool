@@ -11,7 +11,7 @@ interface CsvRow {
   Traffic: string;
   Timestamp: string;
   date?: string;
-  'Branded?'?: boolean;
+  branded?: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -87,15 +87,15 @@ function processData(data: CsvRow[], brandedTerms: string[]): CsvRow[] {
     };
   });
 
-  // Add "Branded" column
+  // Add "branded" column
   const brandedRegex = new RegExp(brandedTerms.map(term => `\\b${term.replace(/\s+/g, '\\s+')}\\b`).join('|'), 'i');
   topPages = topPages.map(row => ({
     ...row,
-    'Branded': brandedRegex.test(row.Keyword),
+    branded: brandedRegex.test(row.Keyword),
   }));
 
   // Select only the required columns
-  const selectedColumns: (keyof CsvRow)[] = ['Keyword', 'Position', 'Search Volume', 'Keyword Intents', 'URL', 'Traffic', 'date', 'Branded'];
+  const selectedColumns: (keyof CsvRow)[] = ['Keyword', 'Position', 'Search Volume', 'Keyword Intents', 'URL', 'Traffic', 'date', 'branded'];
   return topPages.map(row => 
     selectedColumns.reduce((obj, key) => ({ ...obj, [key]: row[key] }), {} as CsvRow)
   );
