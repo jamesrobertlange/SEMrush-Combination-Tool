@@ -11,8 +11,8 @@ interface CsvRow {
   URL: string;
   Traffic: string;
   Timestamp: string;
-  date?: string;
-  branded?: boolean;
+  date: string;
+  branded: boolean;
 }
 
 export default function Home() {
@@ -46,9 +46,10 @@ export default function Home() {
       });
   
       const { data } = await new Promise<Papa.ParseResult<CsvRow>>((resolve) => {
-        Papa.parse(text, {
+        Papa.parse<CsvRow>(text, {
           header: true,
           complete: (results) => resolve(results),
+          transform: (value) => value.trim(),
         });
       });
   
@@ -58,11 +59,11 @@ export default function Home() {
   
     return combinedData;
   };
-
+  
   const processData = (data: CsvRow[], brandedTerms: string[]): CsvRow[] => {
     // Filter for top pages (Position < 11)
     let topPages = data.filter(row => parseInt(row.Position) < 11);
-
+  
     // Remove duplicates
     const uniquePages = new Map<string, CsvRow>();
     topPages.forEach(row => {
@@ -72,11 +73,12 @@ export default function Home() {
       }
     });
     topPages = Array.from(uniquePages.values());
-
+  
     // Sort by Traffic
     topPages.sort((a, b) => parseInt(b.Traffic) - parseInt(a.Traffic));
-
-    // Process date columns
+  
+    // Process date columns and add "branded" column
+    const brandedRegex = new RegExp(brandedTerms.map(term => `\\b${term.replace(/\s+/g, '\\s+')}\\b`).join('|'), 'i');
     topPages = topPages.map(row => {
       const date = new Date(row.Timestamp);
       const year = date.getFullYear();
@@ -84,16 +86,10 @@ export default function Home() {
       return {
         ...row,
         date: `${year}-${month}-01`,
+        branded: brandedRegex.test(row.Keyword),
       };
     });
-
-    // Add "branded" column
-    const brandedRegex = new RegExp(brandedTerms.map(term => `\\b${term.replace(/\s+/g, '\\s+')}\\b`).join('|'), 'i');
-    topPages = topPages.map(row => ({
-      ...row,
-      branded: brandedRegex.test(row.Keyword),
-    }));
-
+  
     // Select only the required columns
     const selectedColumns: (keyof CsvRow)[] = ['Keyword', 'Position', 'Search Volume', 'Keyword Intents', 'URL', 'Traffic', 'date', 'branded'];
     return topPages.map(row => 
