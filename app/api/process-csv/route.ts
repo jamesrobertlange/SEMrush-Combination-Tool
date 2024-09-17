@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 
+interface CsvRow {
+  Keyword: string;
+  Position: string;
+  'Search Volume': string;
+  'Keyword Intents': string;
+  URL: string;
+  Traffic: string;
+  Timestamp: string;
+  date?: string;
+  'Branded?'?: boolean;
+}
+
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const files = formData.getAll('files') as File[];
@@ -35,27 +47,27 @@ export async function POST(req: NextRequest) {
   }
 }
 
-async function processCsvFiles(files: File[]): Promise<any[]> {
-  let combinedData: any[] = [];
+async function processCsvFiles(files: File[]): Promise<CsvRow[]> {
+  let combinedData: CsvRow[] = [];
 
   for (const file of files) {
     const text = await file.text();
-    const records = parse(text, { columns: true, skip_empty_lines: true });
+    const records = parse(text, { columns: true, skip_empty_lines: true }) as CsvRow[];
     combinedData = combinedData.concat(records);
   }
 
   return combinedData;
 }
 
-function processData(data: any[], brandedTerms: string[]): any[] {
+function processData(data: CsvRow[], brandedTerms: string[]): CsvRow[] {
   // Filter for top pages (Position < 11)
   let topPages = data.filter(row => parseInt(row.Position) < 11);
 
   // Remove duplicates
-  const uniquePages = new Map();
+  const uniquePages = new Map<string, CsvRow>();
   topPages.forEach(row => {
     const key = `${row.Keyword}-${row.URL}`;
-    if (!uniquePages.has(key) || parseInt(row.Traffic) > parseInt(uniquePages.get(key).Traffic)) {
+    if (!uniquePages.has(key) || parseInt(row.Traffic) > parseInt(uniquePages.get(key)!.Traffic)) {
       uniquePages.set(key, row);
     }
   });
@@ -83,8 +95,8 @@ function processData(data: any[], brandedTerms: string[]): any[] {
   }));
 
   // Select only the required columns
-  const selectedColumns = ['Keyword', 'Position', 'Search Volume', 'Keyword Intents', 'URL', 'Traffic', 'date', 'Branded'];
+  const selectedColumns: (keyof CsvRow)[] = ['Keyword', 'Position', 'Search Volume', 'Keyword Intents', 'URL', 'Traffic', 'date', 'Branded'];
   return topPages.map(row => 
-    selectedColumns.reduce((obj, key) => ({ ...obj, [key]: row[key] }), {})
+    selectedColumns.reduce((obj, key) => ({ ...obj, [key]: row[key] }), {} as CsvRow)
   );
 }
