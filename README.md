@@ -1,6 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SEMrush Combination Tool
+This tool takes the Organic Position CSVs from a local upload, combines all the CSVs and removes duplicates, and then does a Branded check for 'contains' matches separated by a comma.
 
-## Getting Started
+Visit the [Vercel app here](https://botify-csv-processor.vercel.app/)
+
+## Getting Started Locally
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 First, run the development server:
 
