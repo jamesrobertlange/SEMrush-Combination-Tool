@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 
+
 interface CsvRow {
   Keyword: string;
   Position: string;
@@ -74,7 +75,9 @@ export default function Home() {
 
     topPages.sort((a, b) => parseInt(b.Traffic) - parseInt(a.Traffic));
 
-    const brandedRegex = new RegExp(brandedTerms.map(term => `\\b${term.replace(/\s+/g, '\\s+')}\\b`).join('|'), 'i');
+    // Updated regex pattern
+    const brandedRegex = new RegExp(brandedTerms.map(term => term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|'), 'i');
+    
     topPages = topPages.map(row => {
       const date = new Date(row.Timestamp);
       const year = date.getFullYear();
@@ -90,7 +93,7 @@ export default function Home() {
     return topPages.map(row => 
       selectedColumns.reduce((obj, key) => ({ ...obj, [key]: row[key] }), {} as CsvRow)
     );
-  };
+    };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
