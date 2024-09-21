@@ -1,0 +1,228 @@
+Path,Description,File Content
+csv-processor/,Project folder
+  file_output.py,Project file,"Text file, no specific patterns found"
+  postcss.config.mjs,Project file,"Text file, no specific patterns found"
+  next.config.js,Next.js configuration file,"Text file, no specific patterns found"
+  next-env.d.ts,TypeScript file,Binary file (MIME type: video/mp2t)
+  README.md,Markdown documentation file,"Text file, no specific patterns found"
+  tailwind.config.ts,TypeScript file,Binary file (MIME type: video/mp2t)
+  .gitignore,Git ignore rules,"Text file, no specific patterns found"
+  package-lock.json,JSON configuration file,Binary file (MIME type: application/json)
+  package.json,Node.js package configuration,Binary file (MIME type: application/json)
+  .gitattributes,Project file,"Text file, no specific patterns found"
+  tsconfig.json,JSON configuration file,Binary file (MIME type: application/json)
+  .eslintrc.json,JSON configuration file,Binary file (MIME type: application/json)
+  app/,Project folder
+    favicon.ico,Project file,Binary file (MIME type: image/x-icon)
+    RootLayoutClient.tsx,TypeScript React component file,"Text file, no specific patterns found"
+    layout.tsx,TypeScript React component file,"Text file, no specific patterns found"
+    page.tsx,TypeScript React component file,"Text file, no specific patterns found"
+    globals.css,CSS stylesheet,"Text file, no specific patterns found"
+    new-app/,Project folder
+      NewAppClient.tsx,TypeScript React component file,React component
+      page.tsx,TypeScript React component file,"Text file, no specific patterns found"
+    api/,API routes for server-side functionality
+      process-csv/,Project folder
+    fonts/,Project folder
+      GeistMonoVF.woff,Project file,Binary file (MIME type: font/woff)
+      GeistVF.woff,Project file,Binary file (MIME type: font/woff)
+  .git/,Project folder
+    ORIG_HEAD,Project file,"Text file, no specific patterns found"
+    config,Project file,"Text file, no specific patterns found"
+    HEAD,Project file,"Text file, no specific patterns found"
+    description,Project file,"Text file, no specific patterns found"
+    index,Project file,Binary file or non-UTF-8 encoded text file
+    COMMIT_EDITMSG,Project file,"Text file, no specific patterns found"
+    FETCH_HEAD,Project file,"Text file, no specific patterns found"
+    objects/,Project folder
+      95/,Project folder
+        b524d41d9ddd71b64c99be1c2b882717ee5245,Project file,Binary file or non-UTF-8 encoded text file
+      57/,Project folder
+        f28e463995cc5655ebf6384690930ca335bc2b,Project file,Binary file or non-UTF-8 encoded text file
+      3d/,Project folder
+        65ceb5c5d76417b8701cc151ee5425e18b4938,Project file,Binary file or non-UTF-8 encoded text file
+      b5/,Project folder
+        a8ed935ae3246c45fd749de75ea3c5fd05611a,Project file,Binary file or non-UTF-8 encoded text file
+      b2/,Project folder
+        9f98737a8eff5a97775ed011a51ca8a04bdc26,Project file,Binary file or non-UTF-8 encoded text file
+      ac/,Project folder
+        1452f59f38f6a70a23327ac357962d5733c704,Project file,Binary file or non-UTF-8 encoded text file
+        30ce55b242e71b70a5bd811a7ae1b974e92525,Project file,Binary file or non-UTF-8 encoded text file
+      d0/,Project folder
+        e443d27323f6d2f9b4f1a15f54ee598a82b977,Project file,Binary file or non-UTF-8 encoded text file
+      df/,Project folder
+        db3aab60449ffe22fc4190422b9e4d1886eadc,Project file,Binary file or non-UTF-8 encoded text file
+        e0770424b2a19faf507a501ebfc23be8f54e7b,Project file,Binary file or non-UTF-8 encoded text file
+      da/,Project folder
+        a1b48bcbc987edf2df47422be7257836636513,Project file,Binary file or non-UTF-8 encoded text file
+      a5/,Project folder
+        6d01fd9711912b872839f00efc71b05b7426df,Project file,Binary file or non-UTF-8 encoded text file
+      ae/,Project folder
+        319a62ed1fc5c43d8eb2a95e7f85016255eb0c,Project file,Binary file or non-UTF-8 encoded text file
+      e5/,Project folder
+        44f53c0c42fbddaf8ef3e58f6b5d9917616ab6,Project file,Binary file or non-UTF-8 encoded text file
+      e2/,Project folder
+        15bc4ccf138bbc38ad58ad57e92135484b3c0f,Project file,Binary file or non-UTF-8 encoded text file
+      fc/,Project folder
+        b741a341df889205f9868e01cdef51cc530ae9,Project file,Binary file or non-UTF-8 encoded text file
+      fd/,Project folder
+        3dbb571a12a1c3baf000db049e141c888d05a8,Project file,Binary file or non-UTF-8 encoded text file
+        233bbc4321b370670ba4aaf90827c0fcbddedf,Project file,Binary file or non-UTF-8 encoded text file
+      f2/,Project folder
+        ae185cbfd16946a534d819e9eb03924abbcc49,Project file,Binary file or non-UTF-8 encoded text file
+      fe/,Project folder
+        447f8ed0c1a6f550183003be654578a8b902fd,Project file,Binary file or non-UTF-8 encoded text file
+      fb/,Project folder
+        8b71334a188aa13bda060cd7ab58698e212d87,Project file,Binary file or non-UTF-8 encoded text file
+      ed/,Project folder
+        da999599a546639b069a6fda3b114537682bc7,Project file,Binary file or non-UTF-8 encoded text file
+        8557fff7a664271712a95c51e307e18395c314,Project file,Binary file or non-UTF-8 encoded text file
+      c6/,Project folder
+        5d5eece7750805a18a0c3ae3303916bbb183b7,Project file,Binary file or non-UTF-8 encoded text file
+      20/,Project folder
+        863129a24638a2cc0b7bbcb9311211727c196c,Project file,Binary file or non-UTF-8 encoded text file
+      pack/,Project folder
+      11/,Project folder
+        dcddd939a6417d98e53ff43a94c3b546a1b35d,Project file,Binary file or non-UTF-8 encoded text file
+        b9b68148fedfeb3a57d037998210dae9f5c4aa,Project file,Binary file or non-UTF-8 encoded text file
+      45/,Project folder
+        7c859d2689e258c43ddba496573b745f73ee44,Project file,Binary file or non-UTF-8 encoded text file
+      73/,Project folder
+        0310cbcdd6d05cffefeb645f2792d8d12ea1e5,Project file,Binary file or non-UTF-8 encoded text file
+      1a/,Project folder
+        69fd2a450afc3bf47e08b22c149190df0ffdb4,Project file,Binary file or non-UTF-8 encoded text file
+      17/,Project folder
+        b8a2c97132b5912483ed64e233828763701ce0,Project file,Binary file or non-UTF-8 encoded text file
+      8f/,Project folder
+        63a24255c87bf5ca1e075360c5cab94a41faf5,Project file,Binary file or non-UTF-8 encoded text file
+        74103eb398a35911ad579a9c9554f53201c334,Project file,Binary file or non-UTF-8 encoded text file
+      8a/,Project folder
+        5b74392df8f9317ea9b89e89fe515410ece86a,Project file,Binary file or non-UTF-8 encoded text file
+        64eb3b442fbbf81d59c4070405e21fd1a57054,Project file,Binary file or non-UTF-8 encoded text file
+      26/,Project folder
+        f70e527665f2b0b5af406d6b4aa053768a96e7,Project file,Binary file or non-UTF-8 encoded text file
+      21/,Project folder
+        7c4e14556006734b9403b2e65b1dbc41bbac33,Project file,Binary file or non-UTF-8 encoded text file
+        fdbdd5cc2db3dd0be67dd3cc85241e32dc481c,Project file,Binary file or non-UTF-8 encoded text file
+      86/,Project folder
+        5a558872122504ed61e6dc10d677053b306456,Project file,Binary file or non-UTF-8 encoded text file
+      44/,Project folder
+        c662ad808ac702e33082b1cb722cf2080dcf9d,Project file,Binary file or non-UTF-8 encoded text file
+      43/,Project folder
+        f92bc32995e86b8ed73545a3f466b5089742f7,Project file,Binary file or non-UTF-8 encoded text file
+        fd688135c6b8149dcffbf99688c52dac52fa14,Project file,Binary file or non-UTF-8 encoded text file
+      07/,Project folder
+        69c5e29fbe01e4ea25c03ab1581caf763179f5,Project file,Binary file or non-UTF-8 encoded text file
+      5c/,Project folder
+        3e46add6295e3e7969fa91a1b7da83a0762102,Project file,Binary file or non-UTF-8 encoded text file
+      info/,Project folder
+      62/,Project folder
+        39cb7b7342f06d88d92579979b5968d28c829a,Project file,Binary file or non-UTF-8 encoded text file
+      30/,Project folder
+        50479d80bfcacf90d6a0cc88ac6fb1e3dcd2fb,Project file,Binary file or non-UTF-8 encoded text file
+      37/,Project folder
+        224185490e6db2d26a574d66d4d476336bf644,Project file,Binary file or non-UTF-8 encoded text file
+        329a070117c6f308e87e685dd7a286f8b24826,Project file,Binary file or non-UTF-8 encoded text file
+      08/,Project folder
+        2fc631c35ca94aa18948a17b348fc5a6ca755c,Project file,Binary file or non-UTF-8 encoded text file
+        30de7dbf1da51c478f22d8f1de38b1da47a3e6,Project file,Binary file or non-UTF-8 encoded text file
+      55/,Project folder
+        51f5c57010b4dc1600df570b8ceab2b5cc6aa3,Project file,Binary file or non-UTF-8 encoded text file
+        c234096e49c395b2c5a4a0c67709639b663473,Project file,Binary file or non-UTF-8 encoded text file
+      0f/,Project folder
+        0e189687d778e4727a21f8c921865cc8a68144,Project file,Binary file or non-UTF-8 encoded text file
+      0a/,Project folder
+        6a5fd69a3ed400e34372a5d442bbbb8facb9b5,Project file,Binary file or non-UTF-8 encoded text file
+        3a6bfea32d98e7349520b3532154b2911b211d,Project file,Binary file or non-UTF-8 encoded text file
+      64/,Project folder
+        72f2e790dbc419d60670568e680fc4c579138a,Project file,Binary file or non-UTF-8 encoded text file
+      d4/,Project folder
+        3da912d03f9355f1cf2a863c83d092d9b82797,Project file,Binary file or non-UTF-8 encoded text file
+      ba/,Project folder
+        8660d2193d95f519bd7bd76d0e3193645ef77f,Project file,Binary file or non-UTF-8 encoded text file
+      b8/,Project folder
+        962bfd9ebe204fc128261f65bb8082a089b514,Project file,Binary file or non-UTF-8 encoded text file
+      dd/,Project folder
+        61087998d5b0de75836b5056c578cae78429c9,Project file,Binary file or non-UTF-8 encoded text file
+      dc/,Project folder
+        f3861761ddac917d01f9d1e52aec294cb26b05,Project file,Binary file or non-UTF-8 encoded text file
+      b6/,Project folder
+        b2976c858ec5eb5abbb3f8ab9fe5c9093b6074,Project file,Binary file or non-UTF-8 encoded text file
+      d2/,Project folder
+        a2308132b585b9e5cacd448b403f1ecb159ce7,Project file,Binary file or non-UTF-8 encoded text file
+      a1/,Project folder
+        a30631f3b2c43696e553e673d362b55f54b7a1,Project file,Binary file or non-UTF-8 encoded text file
+      ef/,Project folder
+        e667768e59f7fb8379d00fe0dd08c6936455a6,Project file,Binary file or non-UTF-8 encoded text file
+      c3/,Project folder
+        328a0661eae6c8533d553ca2a3d31238cb86fa,Project file,Binary file or non-UTF-8 encoded text file
+      c4/,Project folder
+        9e7003409662dc8ca050c3293931626cfc6232,Project file,Binary file or non-UTF-8 encoded text file
+      e9/,Project folder
+        a1a83b79bb9f4567d832d53f92c75328f54877,Project file,Binary file or non-UTF-8 encoded text file
+      e7/,Project folder
+        ff90fd2767199e09b281bfa87e08a90f33270e,Project file,Binary file or non-UTF-8 encoded text file
+      2c/,Project folder
+        eb24c84bfa258aed8c273c849f5a290b50f54a,Project file,Binary file or non-UTF-8 encoded text file
+        8fd8f565b7f5b0c6af972b5a2546466929cf2f,Project file,Binary file or non-UTF-8 encoded text file
+      79/,Project folder
+        877693523c40a7d35a314ed7b9d9d83c3f5097,Project file,Binary file or non-UTF-8 encoded text file
+      83/,Project folder
+        c188f29bdf179606fac4b48fbd877782c724d0,Project file,Binary file or non-UTF-8 encoded text file
+      1b/,Project folder
+        62daacff96dad6584e71cd962051b82957c313,Project file,Binary file or non-UTF-8 encoded text file
+      23/,Project folder
+        9669ea97c91985614e278c5e76d033bbadfd3f,Project file,Binary file or non-UTF-8 encoded text file
+      71/,Project folder
+        8d6fea4835ec2d246af9800eddb7ffb276240c,Project file,Binary file or non-UTF-8 encoded text file
+      2e/,Project folder
+        0735bd567de859a28f9fe606a40379fa86296d,Project file,Binary file or non-UTF-8 encoded text file
+        b21d4a14fdff15c23c3b4e7bf8f45638061d2c,Project file,Binary file or non-UTF-8 encoded text file
+      78/,Project folder
+        5e5b04866aa70ddb5a79ce7097cafb79194276,Project file,Binary file or non-UTF-8 encoded text file
+      13/,Project folder
+        d40b892057e0e4271c5c8f9fc8db30e80f2409,Project file,Binary file or non-UTF-8 encoded text file
+      7f/,Project folder
+        d902058c9e21aca48bbab1abdbd17ad6fe0727,Project file,Binary file or non-UTF-8 encoded text file
+      25/,Project folder
+        37c29ec1368885fd4cf7397e4e2d532df7ea72,Project file,Binary file or non-UTF-8 encoded text file
+    info/,Project folder
+      exclude,Project file,"Text file, no specific patterns found"
+    logs/,Project folder
+      HEAD,Project file,"Text file, no specific patterns found"
+      refs/,Project folder
+        stash,Project file,"Text file, no specific patterns found"
+        heads/,Project folder
+          add-pages,Project file,"Text file, no specific patterns found"
+          main,Project file,"Text file, no specific patterns found"
+        remotes/,Project folder
+          origin/,Project folder
+            HEAD,Project file,"Text file, no specific patterns found"
+            main,Project file,"Text file, no specific patterns found"
+    hooks/,Custom React hooks
+      commit-msg.sample,Project file,"Text file, no specific patterns found"
+      pre-rebase.sample,Project file,"Text file, no specific patterns found"
+      sendemail-validate.sample,Project file,"Text file, no specific patterns found"
+      pre-commit.sample,Project file,"Text file, no specific patterns found"
+      applypatch-msg.sample,Project file,"Text file, no specific patterns found"
+      fsmonitor-watchman.sample,Project file,"Text file, no specific patterns found"
+      pre-receive.sample,Project file,"Text file, no specific patterns found"
+      prepare-commit-msg.sample,Project file,"Text file, no specific patterns found"
+      post-update.sample,Project file,"Text file, no specific patterns found"
+      pre-merge-commit.sample,Project file,"Text file, no specific patterns found"
+      pre-applypatch.sample,Project file,"Text file, no specific patterns found"
+      pre-push.sample,Project file,"Text file, no specific patterns found"
+      update.sample,Project file,"Text file, no specific patterns found"
+      push-to-checkout.sample,Project file,"Text file, no specific patterns found"
+    refs/,Project folder
+      stash,Project file,"Text file, no specific patterns found"
+      heads/,Project folder
+        add-pages,Project file,"Text file, no specific patterns found"
+        main,Project file,"Text file, no specific patterns found"
+      tags/,Project folder
+      remotes/,Project folder
+        origin/,Project folder
+          HEAD,Project file,"Text file, no specific patterns found"
+          main,Project file,"Text file, no specific patterns found"
+    branches/,Project folder
+  pages/,Contains page components and routing structure
