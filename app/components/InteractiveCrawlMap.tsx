@@ -1,6 +1,13 @@
 import React, { useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ForceGraphMethods } from 'react-force-graph-2d';
+
+interface D3ForceObject {
+  charge: () => { strength: (strength: number) => void };
+  center: () => { strength: (strength: number) => void };
+  link: () => { strength: (strength: number) => void };
+}
 
 const ForceGraph2D = dynamic(() => import('react-force-graph-2d').then(mod => mod.default), { 
   ssr: false,
@@ -57,7 +64,7 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
-  const graphRef = useRef<any>();
+  const graphRef = useRef<ForceGraphMethods | null>(null);
 
   const pageTypeColors = useMemo(() => {
     const colorGroups = {
@@ -473,7 +480,7 @@ const InteractiveCrawlMap: React.FC = () => {
                 ctx.fill();
               }}
               linkDirectionalParticles={0}
-              d3Force={(d3Force: any) => {
+              d3Force={(d3Force: D3ForceObject) => {
                 d3Force.charge().strength(-100);
                 d3Force.center().strength(0.05);
                 d3Force.link().strength(0.7);
