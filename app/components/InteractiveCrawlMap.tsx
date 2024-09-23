@@ -11,7 +11,7 @@ interface D3ForceObject {
 
 const ForceGraph2D = dynamic(() => 
   import('react-force-graph-2d').then(mod => {
-    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, React.ComponentProps<typeof mod.default>>((props, ref) => {
+    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, React.ComponentProps<typeof mod.default>>((props, ref: ForwardedRef<ForceGraphMethods>) => {
       const Comp = mod.default;
       return <Comp {...props} ref={ref} />;
     });
@@ -20,7 +20,6 @@ const ForceGraph2D = dynamic(() =>
   }),
   { ssr: false, loading: () => <p>Loading graph...</p> }
 );
-
 interface CrawlData {
   'Full URL': string;
   Depth: number;
