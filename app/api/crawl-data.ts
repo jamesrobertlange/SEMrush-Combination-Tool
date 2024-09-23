@@ -2,10 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const storage = new Storage({
-  projectId: process.env.GCP_PROJECT_ID,
-  credentials: JSON.parse(process.env.GCP_CREDENTIALS || '{}'),
-});
+const storage = new Storage();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { page = '1', pageSize = '100' } = req.query;
