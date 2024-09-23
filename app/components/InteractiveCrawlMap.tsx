@@ -108,22 +108,28 @@ const InteractiveCrawlMap: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
-      const result = await response.json();
+      const result: CrawlData[] = await response.json();
       
       const pageTypes: string[] = Array.from(
-        new Set(result.map((item: CrawlData) => typeof item.pagetype === 'string' ? item.pagetype : ''))
+        new Set(result.map(item => typeof item.pagetype === 'string' ? item.pagetype : ''))
       );
       setAllPageTypes(pageTypes);
       setSelectedPageTypes(new Set(pageTypes));
 
       const domains: string[] = Array.from(
-        new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname))
+        new Set(result.map(item => {
+          try {
+            return new URL(item['Full URL']).hostname;
+          } catch {
+            return '';
+          }
+        }))
       );
       setAllDomains(domains);
       setSelectedDomains(new Set(domains));
       
       const chunkSize = 1000;
-      const chunks = [];
+      const chunks: CrawlData[][] = [];
       for (let i = 0; i < result.length; i += chunkSize) {
         chunks.push(result.slice(i, i + chunkSize));
       }
