@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { ForceGraphMethods, ForceGraphProps, NodeObject } from 'react-force-graph-2d';
@@ -21,7 +21,6 @@ const ForceGraph2D = dynamic(() =>
   import('react-force-graph-2d').then(mod => {
     const ForwardRefForceGraph2D = React.forwardRef<ForceGraphMethods, ForceGraphProps<Node, Link>>((props, ref) => {
       const Comp = mod.default;
-      // @ts-expect-error: ForceGraph2D component from react-force-graph-2d has incompatible types
       return <Comp {...props} ref={ref} />;
     });
     ForwardRefForceGraph2D.displayName = 'ForwardRefForceGraph2D';
@@ -69,21 +68,8 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
+  const [visibleNodes, setVisibleNodes] = useState<Node[]>([]);
   const graphRef = useRef<ForceGraphMethods>(null);
-
-  useEffect(() => {
-    const fg = graphRef.current;
-    if (fg) {
-      // Specify the force name when calling d3Force
-      const chargeForce = fg.d3Force('charge');
-      const centerForce = fg.d3Force('center');
-      const linkForce = fg.d3Force('link');
-      
-      if (chargeForce && 'strength' in chargeForce) chargeForce.strength(-100);
-      if (centerForce && 'strength' in centerForce) centerForce.strength(0.05);
-      if (linkForce && 'strength' in linkForce) linkForce.strength(0.7);
-    }
-  },  []);
 
   const pageTypeColors = useMemo(() => {
     const colorGroups = {
@@ -109,6 +95,18 @@ const InteractiveCrawlMap: React.FC = () => {
     });
     return colorMap;
   }, [allPageTypes]);
+
+  const visiblePageTypes = useMemo(() => {
+    const types = new Set(visibleNodes.map(node => node.pagetype));
+    return Array.from(types).filter(type => selectedPageTypes.has(type));
+  }, [visibleNodes, selectedPageTypes]);
+
+  const handleEngineStop = useCallback(() => {
+    if (graphRef.current) {
+      setVisibleNodes(graphRef.current.graphData().nodes);
+    }
+  }, []);
+
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -508,19 +506,19 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
           
           <div className="relative" style={{ width: '100%', height: 'calc(100vh - 250px)', minHeight: '500px', border: '1px solid #ddd' }}>
-          <ForceGraph2D
-        ref={graphRef}
-        graphData={{ nodes, links }}
-        nodeColor={nodeColor}
-        nodeLabel={nodeLabel}
-        onNodeClick={handleNodeClick}
-        linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
-        nodeCanvasObject={nodeCanvasObject}
-        linkDirectionalParticles={0}
-        cooldownTicks={100}
-        // Remove the forceEngine prop if it's not supported
-      />
-    </div>
+            <ForceGraph2D
+              ref={graphRef}
+              graphData={{ nodes, links }}
+              nodeColor={nodeColor}
+              nodeLabel={nodeLabel}
+              onNodeClick={handleNodeClick}
+              linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
+              nodeCanvasObject={nodeCanvasObject}
+              linkDirectionalParticles={0}
+              cooldownTicks={100}
+              onEngineStop={handleEngineStop}
+            />
+          </div>
 
           {selectedNode && showNodeInfo && (
             <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
@@ -545,12 +543,12 @@ const InteractiveCrawlMap: React.FC = () => {
             </div>
           )}
 
-          <div className="mt-4">
+            <div className="mt-4">
             <h3 className="font-bold">Legend</h3>
             <div className="flex flex-wrap mt-2">
-              {Object.entries(pageTypeColors).map(([pageType, color]) => (
-                <div key={pageType} className="flex items-center mr-4 mb-2">
-                  <div className="w-4 h-4 mr-2" style={{ backgroundColor: color }}></div>
+              {allPageTypes.map((pageType) => (
+                <div key={pageType} className="flex items-center mr-4 mb-2" style={{ opacity: selectedPageTypes.has(pageType) ? 1 : 0.5 }}>
+                  <div className="w-4 h-4 mr-2" style={{ backgroundColor: pageTypeColors[pageType] }}></div>
                   <span>{pageType}</span>
                 </div>
               ))}
@@ -566,7 +564,7 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
         </>
       ) : (
-        <p>Enter a JSON URL and click &ldquo;Load Data&rdquo; to view the crawl map.</p>
+        <p>Enter a JSON URL and click &quot;Load Data&quot; to view the crawl map.</p>
       )}
     </div>
   );
