@@ -101,8 +101,11 @@ const InteractiveCrawlMap: React.FC = () => {
       }
       const result = await response.json();
       
-      const pageTypes = Array.from(new Set(result.map((item: CrawlData) => item.pagetype as string)));
+      const pageTypes = Array.from(
+        new Set(result.map((item: CrawlData) => typeof item.pagetype === 'string' ? item.pagetype : ''))
+      );
       setAllPageTypes(pageTypes);
+      
 
       setSelectedPageTypes(new Set(pageTypes));
 
