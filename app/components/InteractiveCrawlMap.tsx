@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react';
+import React from 'react';
+import { useState, useMemo, useCallback, useRef, forwardRef, ForwardedRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { ForceGraphMethods } from 'react-force-graph-2d';
@@ -20,6 +21,7 @@ const ForceGraph2D = dynamic(() =>
   }),
   { ssr: false, loading: () => <p>Loading graph...</p> }
 );
+
 interface CrawlData {
   'Full URL': string;
   Depth: number;
