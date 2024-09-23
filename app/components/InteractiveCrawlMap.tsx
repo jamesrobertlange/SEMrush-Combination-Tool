@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
@@ -22,6 +22,8 @@ interface Node {
   pagetype: string;
   fullUrl: string;
   domain: string;
+  x?: number;
+  y?: number;
 }
 
 interface Link {
@@ -70,7 +72,7 @@ const InteractiveCrawlMap: React.FC = () => {
     const colorMap: { [key: string]: string } = {};
     allPageTypes.forEach((pageType, index) => {
       let group = 'Other';
-      for (const [key, _] of Object.entries(colorGroups)) {
+      for (const [key] of Object.entries(colorGroups)) {
         if (pageType.toLowerCase().includes(key.toLowerCase())) {
           group = key;
           break;
@@ -92,27 +94,22 @@ const InteractiveCrawlMap: React.FC = () => {
       }
       const result = await response.json();
       
-      // Extract all page types
       const pageTypes = Array.from(new Set(result.map((item: CrawlData) => item.pagetype)));
       setAllPageTypes(pageTypes);
       setSelectedPageTypes(new Set(pageTypes));
 
-      // Extract domains
       const domains = Array.from(new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname)));
       setAllDomains(domains);
       setSelectedDomains(new Set(domains));
       
-      // Implement data chunking
       const chunkSize = 1000;
       const chunks = [];
       for (let i = 0; i < result.length; i += chunkSize) {
         chunks.push(result.slice(i, i + chunkSize));
       }
       
-      // Load initial chunk
       setData(chunks[0]);
       
-      // Load remaining chunks asynchronously
       chunks.slice(1).forEach((chunk, index) => {
         setTimeout(() => {
           setData(prevData => [...prevData, ...chunk]);
@@ -143,7 +140,6 @@ const InteractiveCrawlMap: React.FC = () => {
     const nodesMap = new Map<string, Node>();
     const linksArray: Link[] = [];
 
-    // Add home page
     if (jsonUrl) {
       nodesMap.set('/', {
         id: '/',
@@ -167,12 +163,10 @@ const InteractiveCrawlMap: React.FC = () => {
       };
       nodesMap.set(node.id, node);
 
-      // Create link to parent
       const parentPath = item['URL Path'].split('/').slice(0, -1).join('/') || '/';
       if (nodesMap.has(parentPath)) {
         linksArray.push({ source: parentPath, target: node.id });
       } else {
-        // If parent doesn't exist, link to home
         linksArray.push({ source: '/', target: node.id });
       }
     });
@@ -211,7 +205,6 @@ const InteractiveCrawlMap: React.FC = () => {
     const connectedNodeIds = new Set(connectedLinks.flatMap(link => [link.source, link.target]));
     setConnectedNodes(connectedNodeIds);
 
-    // Calculate rollup
     const rollup = {
       byDepth: {} as Record<number, number>,
       byPageType: {} as Record<string, number>
@@ -462,18 +455,18 @@ const InteractiveCrawlMap: React.FC = () => {
             <ForceGraph2D
               ref={graphRef}
               graphData={{ nodes, links }}
-              nodeColor={(node: any) => 
+              nodeColor={(node: Node) => 
                 connectedNodes.has(node.id) 
                   ? '#FFA500' 
                   : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252')
               }
-              nodeLabel={showNodeInfo ? ((node: any) => `URL: ${node.fullUrl}\nDepth: ${node.depth}\nPage Type: ${node.pagetype}`) : null}
+              nodeLabel={showNodeInfo ? ((node: Node) => `URL: ${node.fullUrl}\nDepth: ${node.depth}\nPage Type: ${node.pagetype}`) : null}
               onNodeClick={handleNodeClick}
-              linkColor={(link: any) => highlightLinks.has(link) ? '#FFA500' : '#999'}
-              nodeCanvasObject={(node: any, ctx, globalScale) => {
+              linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
+              nodeCanvasObject={(node: Node, ctx) => {
                 const size = node.depth === 0 ? 8 : 5;
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
+                ctx.arc(node.x!, node.y!, size, 0, 2 * Math.PI, false);
                 ctx.fillStyle = connectedNodes.has(node.id) 
                   ? '#FFA500' 
                   : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252');
@@ -533,7 +526,7 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
         </>
       ) : (
-        <p>Enter a JSON URL and click "Load Data" to view the crawl map.</p>
+        <p>Enter a JSON URL and click &ldquo;Load Data&rdquo; to view the crawl map.</p>
       )}
     </div>
   );
