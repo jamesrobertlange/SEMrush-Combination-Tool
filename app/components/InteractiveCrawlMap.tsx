@@ -101,8 +101,9 @@ const InteractiveCrawlMap: React.FC = () => {
       }
       const result = await response.json();
       
-      const pageTypes = Array.from(new Set(result.map((item: CrawlData) => item.pagetype)));
+      const pageTypes = Array.from(new Set(result.map((item: CrawlData) => item.pagetype as string)));
       setAllPageTypes(pageTypes);
+
       setSelectedPageTypes(new Set(pageTypes));
 
       const domains = Array.from(new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname)));
