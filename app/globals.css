@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --background: #1a1a1a;
   --text: #ffffff;
@@ -9,7 +10,7 @@
   --input-text: #ffffff;
   --button-bg: #3b82f6;
   --button-text: #ffffff;
-  --sidebar-bg: #2c2c2c;
+  --sidebar-bg: #f8dfdf;
   --sidebar-text: #ffffff;
   --sidebar-hover: #3b82f6;
   --sidebar-active: #2563eb;

@@ -4,7 +4,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Botify SEMRush Combination Tool',
+    template: '%s',
     default: 'Botify SEMRush Combination Tool',
   },
   description: 'Process and combine SEMRush CSV files',

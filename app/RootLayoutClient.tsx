@@ -15,21 +15,27 @@ export default function RootLayoutClient({
     <html lang="en">
       <body>
         <div className="flex h-screen bg-[var(--background)]">
-          {/* Side Menu */}
-          <div className="w-64 bg-[var(--sidebar-bg)] shadow-md">
+          {/* Side Menu with Dark Background */}
+          <div className="w-64 bg-gray-800 shadow-md">
             <div className="p-4">
-              <h2 className="text-xl font-bold text-[var(--sidebar-text)]">Menu</h2>
+              <h2 className="text-xl font-bold text-white">Menu</h2>
             </div>
             <nav className="mt-4">
               <Link 
                 href="/"
-                className={`block py-2 px-4 text-sm hover:bg-[var(--sidebar-hover)] ${pathname === '/' ? 'bg-[var(--sidebar-active)] text-[var(--sidebar-text)]' : 'text-[var(--sidebar-text)]'}`}
+                className={`block py-2 px-4 text-sm hover:bg-gray-700 ${pathname === '/' ? 'bg-gray-700 text-white' : 'text-gray-300'}`}
               >
-                CSV Processor
+                Home
+              </Link>
+              <Link 
+                href="/crawl-map"
+                className={`block py-2 px-4 text-sm hover:bg-gray-700 ${pathname === '/crawl-map' ? 'bg-gray-700 text-white' : 'text-gray-300'}`}
+              >
+                Crawl Map
               </Link>
               <Link 
                 href="/new-app"
-                className={`block py-2 px-4 text-sm hover:bg-[var(--sidebar-hover)] ${pathname === '/new-app' ? 'bg-[var(--sidebar-active)] text-[var(--sidebar-text)]' : 'text-[var(--sidebar-text)]'}`}
+                className={`block py-2 px-4 text-sm hover:bg-gray-700 ${pathname === '/new-app' ? 'bg-gray-700 text-white' : 'text-gray-300'}`}
               >
                 New App
               </Link>
