@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { ForceGraphMethods } from 'react-force-graph-2d';
@@ -9,10 +9,17 @@ interface D3ForceObject {
   link: () => { strength: (strength: number) => void };
 }
 
-const ForceGraph2D = dynamic(() => import('react-force-graph-2d').then(mod => mod.default), { 
-  ssr: false,
-  loading: () => <p>Loading graph...</p>,
-});
+const ForceGraph2D = dynamic(() => 
+  import('react-force-graph-2d').then(mod => {
+    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, any>((props, ref) => {
+      const Comp = mod.default;
+      return <Comp {...props} ref={ref} />;
+    });
+    ForwardRefForceGraph2D.displayName = 'ForwardRefForceGraph2D';
+    return ForwardRefForceGraph2D;
+  }),
+  { ssr: false, loading: () => <p>Loading graph...</p> }
+);
 
 interface CrawlData {
   'Full URL': string;
@@ -101,12 +108,10 @@ const InteractiveCrawlMap: React.FC = () => {
       }
       const result = await response.json();
       
-      const pageTypes = Array.from(
+      const pageTypes: string[] = Array.from(
         new Set(result.map((item: CrawlData) => typeof item.pagetype === 'string' ? item.pagetype : ''))
       );
       setAllPageTypes(pageTypes);
-      
-
       setSelectedPageTypes(new Set(pageTypes));
 
       const domains = Array.from(new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname)));
@@ -463,35 +468,35 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
           
           <div className="relative" style={{ width: '100%', height: 'calc(100vh - 250px)', minHeight: '500px', border: '1px solid #ddd' }}>
-            <ForceGraph2D
-              ref={graphRef}
-              graphData={{ nodes, links }}
-              nodeColor={(node: Node) => 
-                connectedNodes.has(node.id) 
-                  ? '#FFA500' 
-                  : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252')
-              }
-              nodeLabel={showNodeInfo ? ((node: Node) => `URL: ${node.fullUrl}\nDepth: ${node.depth}\nPage Type: ${node.pagetype}`) : null}
-              onNodeClick={handleNodeClick}
-              linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
-              nodeCanvasObject={(node: Node, ctx) => {
-                const size = node.depth === 0 ? 8 : 5;
-                ctx.beginPath();
-                ctx.arc(node.x!, node.y!, size, 0, 2 * Math.PI, false);
-                ctx.fillStyle = connectedNodes.has(node.id) 
-                  ? '#FFA500' 
-                  : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252');
-                ctx.fill();
-              }}
-              linkDirectionalParticles={0}
-              d3Force={(d3Force: D3ForceObject) => {
-                d3Force.charge().strength(-100);
-                d3Force.center().strength(0.05);
-                d3Force.link().strength(0.7);
-              }}
-              cooldownTicks={100}
-            />
-          </div>
+        <ForceGraph2D
+          ref={graphRef}
+          graphData={{ nodes, links }}
+          nodeColor={(node: Node) => 
+            connectedNodes.has(node.id) 
+              ? '#FFA500' 
+              : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252')
+          }
+          nodeLabel={showNodeInfo ? ((node: Node) => `URL: ${node.fullUrl}\nDepth: ${node.depth}\nPage Type: ${node.pagetype}`) : null}
+          onNodeClick={handleNodeClick}
+          linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
+          nodeCanvasObject={(node: Node, ctx) => {
+            const size = node.depth === 0 ? 8 : 5;
+            ctx.beginPath();
+            ctx.arc(node.x!, node.y!, size, 0, 2 * Math.PI, false);
+            ctx.fillStyle = connectedNodes.has(node.id) 
+              ? '#FFA500' 
+              : (node.isIndexable ? pageTypeColors[node.pagetype] : '#FF5252');
+            ctx.fill();
+          }}
+          linkDirectionalParticles={0}
+          d3Force={(d3Force: D3ForceObject) => {
+            d3Force.charge().strength(-100);
+            d3Force.center().strength(0.05);
+            d3Force.link().strength(0.7);
+          }}
+          cooldownTicks={100}
+        />
+      </div>
 
           {selectedNode && showNodeInfo && (
             <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
