@@ -3,20 +3,18 @@ import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { ForceGraphMethods, ForceGraphProps, NodeObject } from 'react-force-graph-2d';
 
-// @ts-expect-error: Ignoring type check for d3Force to avoid type errors
-interface D3ForceObject {
-  charge: () => { strength: (strength: number) => void };
-  center: () => { strength: (strength: number) => void };
-  link: () => { strength: (strength: number) => void };
-}
-
 interface Node extends NodeObject {
-  id: string; // Ensure id is always a string
+  id: string;
   depth: number;
   isIndexable: boolean;
   pagetype: string;
   fullUrl: string;
   domain: string;
+}
+
+interface Link {
+  source: string;
+  target: string;
 }
 
 const ForceGraph2D = dynamic(() => 
@@ -76,15 +74,16 @@ const InteractiveCrawlMap: React.FC = () => {
   useEffect(() => {
     const fg = graphRef.current;
     if (fg) {
-      // @ts-expect-error: Ignoring type check for d3Force to avoid type errors
-      const d3Force = fg.d3Force();
-      if (d3Force) {
-        d3Force('charge').strength(-100);
-        d3Force('center').strength(0.05);
-        d3Force('link').strength(0.7);
-      }
+      // Specify the force name when calling d3Force
+      const chargeForce = fg.d3Force('charge');
+      const centerForce = fg.d3Force('center');
+      const linkForce = fg.d3Force('link');
+      
+      if (chargeForce && 'strength' in chargeForce) chargeForce.strength(-100);
+      if (centerForce && 'strength' in centerForce) centerForce.strength(0.05);
+      if (linkForce && 'strength' in linkForce) linkForce.strength(0.7);
     }
-  }, []);
+  },  []);
 
   const pageTypeColors = useMemo(() => {
     const colorGroups = {
@@ -509,19 +508,19 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
           
           <div className="relative" style={{ width: '100%', height: 'calc(100vh - 250px)', minHeight: '500px', border: '1px solid #ddd' }}>
-        <ForceGraph2D
-          ref={graphRef}
-          graphData={{ nodes, links }}
-          nodeColor={nodeColor}
-          nodeLabel={nodeLabel}
-          onNodeClick={handleNodeClick}
-          linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
-          nodeCanvasObject={nodeCanvasObject}
-          linkDirectionalParticles={0}
-          cooldownTicks={100}
-          forceEngine="d3" // Specify to use D3 force engine
-        />
-      </div>
+          <ForceGraph2D
+        ref={graphRef}
+        graphData={{ nodes, links }}
+        nodeColor={nodeColor}
+        nodeLabel={nodeLabel}
+        onNodeClick={handleNodeClick}
+        linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
+        nodeCanvasObject={nodeCanvasObject}
+        linkDirectionalParticles={0}
+        cooldownTicks={100}
+        // Remove the forceEngine prop if it's not supported
+      />
+    </div>
 
           {selectedNode && showNodeInfo && (
             <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
