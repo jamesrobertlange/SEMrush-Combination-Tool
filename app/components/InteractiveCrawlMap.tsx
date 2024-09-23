@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useMemo, useCallback, useRef, forwardRef, ForwardedRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { ForceGraphMethods } from 'react-force-graph-2d';
+import { ForceGraphMethods, ForceGraphProps } from 'react-force-graph-2d';
 
 interface D3ForceObject {
   charge: () => { strength: (strength: number) => void };
@@ -12,7 +11,7 @@ interface D3ForceObject {
 
 const ForceGraph2D = dynamic(() => 
   import('react-force-graph-2d').then(mod => {
-    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, React.ComponentProps<typeof mod.default>>((props, ref: ForwardedRef<ForceGraphMethods>) => {
+    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, ForceGraphProps>((props, ref) => {
       const Comp = mod.default;
       return <Comp {...props} ref={ref} />;
     });
@@ -72,7 +71,7 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
-  const graphRef = useRef<ForceGraphMethods | null>(null);
+  const graphRef = useRef<ForceGraphMethods>(null);
 
   const pageTypeColors = useMemo(() => {
     const colorGroups = {
@@ -470,7 +469,7 @@ const InteractiveCrawlMap: React.FC = () => {
           
           <div className="relative" style={{ width: '100%', height: 'calc(100vh - 250px)', minHeight: '500px', border: '1px solid #ddd' }}>
         <ForceGraph2D
-          ref={graphRef}
+          ef={graphRef}
           graphData={{ nodes, links }}
           nodeColor={(node: Node) => 
             connectedNodes.has(node.id) 
