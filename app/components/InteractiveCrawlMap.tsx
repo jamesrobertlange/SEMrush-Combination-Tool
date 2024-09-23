@@ -116,7 +116,9 @@ const InteractiveCrawlMap: React.FC = () => {
       setAllPageTypes(pageTypes);
       setSelectedPageTypes(new Set(pageTypes));
 
-      const domains = Array.from(new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname)));
+      const domains: string[] = Array.from(
+        new Set(result.map((item: CrawlData) => new URL(item['Full URL']).hostname))
+      );
       setAllDomains(domains);
       setSelectedDomains(new Set(domains));
       
@@ -140,6 +142,7 @@ const InteractiveCrawlMap: React.FC = () => {
       setLoading(false);
     }
   }, [jsonUrl]);
+
 
   const filteredData = useMemo(() => {
     return data.filter((item: CrawlData) => {
