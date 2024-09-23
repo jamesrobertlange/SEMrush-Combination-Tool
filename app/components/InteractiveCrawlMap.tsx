@@ -11,7 +11,7 @@ interface D3ForceObject {
 
 const ForceGraph2D = dynamic(() => 
   import('react-force-graph-2d').then(mod => {
-    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, any>((props, ref) => {
+    const ForwardRefForceGraph2D = forwardRef<ForceGraphMethods, React.ComponentProps<typeof mod.default>>((props, ref) => {
       const Comp = mod.default;
       return <Comp {...props} ref={ref} />;
     });
