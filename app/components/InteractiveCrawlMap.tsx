@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { ForceGraphMethods, ForceGraphProps, NodeObject } from 'react-force-graph-2d';
+import { ForceGraphMethods, ForceGraphProps, NodeObject, LinkObject } from 'react-force-graph-2d';
 
 interface Node extends NodeObject {
   id: string;
@@ -12,16 +12,20 @@ interface Node extends NodeObject {
   domain: string;
 }
 
-interface Link {
+interface Link extends LinkObject {
   source: string;
   target: string;
 }
 
+type SpecificForceGraphMethods = ForceGraphMethods & {
+  graphData: () => { nodes: Node[], links: Link[] };
+};
+
 const ForceGraph2D = dynamic(() => 
   import('react-force-graph-2d').then(mod => {
-    const ForwardRefForceGraph2D = React.forwardRef<ForceGraphMethods, ForceGraphProps<Node, Link>>((props, ref) => {
+    const ForwardRefForceGraph2D = React.forwardRef<SpecificForceGraphMethods, ForceGraphProps<Node, Link>>((props, ref) => {
       const Comp = mod.default;
-      return <Comp {...props} ref={ref} />;
+      return <Comp {...props} ref={ref as React.MutableRefObject<SpecificForceGraphMethods | undefined>} />;
     });
     ForwardRefForceGraph2D.displayName = 'ForwardRefForceGraph2D';
     return ForwardRefForceGraph2D;
@@ -35,11 +39,6 @@ interface CrawlData {
   'Is Indexable': boolean;
   pagetype: string;
   'URL Path': string;
-}
-
-interface Link {
-  source: string;
-  target: string;
 }
 
 interface Rollup {
@@ -68,7 +67,8 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
-  const graphRef = useRef<ForceGraphMethods>(null);
+  const [visibleNodes, setVisibleNodes] = useState<Node[]>([]);
+  const graphRef = useRef<SpecificForceGraphMethods>(null);
 
   const pageTypeColors = useMemo(() => {
     const colorGroups = {
@@ -97,7 +97,8 @@ const InteractiveCrawlMap: React.FC = () => {
 
   const handleEngineStop = useCallback(() => {
     if (graphRef.current) {
-      setVisibleNodes(graphRef.current.graphData().nodes);
+      const graphData = graphRef.current.graphData();
+      setVisibleNodes(graphData.nodes);
     }
   }, []);
 
@@ -387,12 +388,12 @@ const InteractiveCrawlMap: React.FC = () => {
           Load Data
         </button>
         <button 
-          type="button" 
-          onClick={() => setShowNodeInfo(!showNodeInfo)}
-          className="bg-purple-500 text-white px-4 py-2 rounded"
-        >
-          {showNodeInfo ? 'Hide' : 'Show'} Node Info
-        </button>
+        type="button" 
+        onClick={() => setShowNodeInfo(!showNodeInfo)}
+        className="bg-purple-500 text-white px-4 py-2 rounded"
+      >
+        {showNodeInfo ? 'Hide' : 'Show'} Node Info
+      </button>
       </form>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -500,22 +501,22 @@ const InteractiveCrawlMap: React.FC = () => {
           </div>
           
           <div className="relative" style={{ width: '100%', height: 'calc(100vh - 250px)', minHeight: '500px', border: '1px solid #ddd' }}>
-            <ForceGraph2D
-              ref={graphRef}
-              graphData={{ nodes, links }}
-              nodeColor={nodeColor}
-              nodeLabel={nodeLabel}
-              onNodeClick={handleNodeClick}
-              linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
-              nodeCanvasObject={nodeCanvasObject}
-              linkDirectionalParticles={0}
-              cooldownTicks={100}
-              onEngineStop={handleEngineStop}
-            />
+          <ForceGraph2D
+        ref={graphRef}
+        graphData={{ nodes, links }}
+        nodeColor={nodeColor}
+        nodeLabel={nodeLabel}
+        onNodeClick={handleNodeClick}
+        linkColor={(link: Link) => highlightLinks.has(link) ? '#FFA500' : '#999'}
+        nodeCanvasObject={nodeCanvasObject}
+        linkDirectionalParticles={0}
+        cooldownTicks={100}
+        onEngineStop={handleEngineStop}
+      />
           </div>
 
           {selectedNode && showNodeInfo && (
-            <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
+        <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
               <h3 className="font-bold">Selected Node Information</h3>
               <p><strong>URL:</strong> {selectedNode.fullUrl}</p>
               <p><strong>Depth:</strong> {selectedNode.depth}</p>
