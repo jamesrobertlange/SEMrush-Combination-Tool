@@ -96,11 +96,6 @@ const InteractiveCrawlMap: React.FC = () => {
     return colorMap;
   }, [allPageTypes]);
 
-  const visiblePageTypes = useMemo(() => {
-    const types = new Set(visibleNodes.map(node => node.pagetype));
-    return Array.from(types).filter(type => selectedPageTypes.has(type));
-  }, [visibleNodes, selectedPageTypes]);
-
   const handleEngineStop = useCallback(() => {
     if (graphRef.current) {
       setVisibleNodes(graphRef.current.graphData().nodes);
