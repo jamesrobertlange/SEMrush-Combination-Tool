@@ -12,20 +12,18 @@ interface Node extends NodeObject {
   domain: string;
 }
 
-interface Link extends LinkObject {
+interface Link extends LinkObject<Node> {
   source: string;
   target: string;
 }
 
-type SpecificForceGraphMethods = ForceGraphMethods & {
-  graphData: () => { nodes: Node[], links: Link[] };
-};
+type SpecificForceGraphMethods = ForceGraphMethods<Node, Link>;
 
 const ForceGraph2D = dynamic(() => 
   import('react-force-graph-2d').then(mod => {
     const ForwardRefForceGraph2D = React.forwardRef<SpecificForceGraphMethods, ForceGraphProps<Node, Link>>((props, ref) => {
       const Comp = mod.default;
-      return <Comp {...props} ref={ref as React.MutableRefObject<SpecificForceGraphMethods | undefined>} />;
+      return <Comp {...props} ref={ref} />;
     });
     ForwardRefForceGraph2D.displayName = 'ForwardRefForceGraph2D';
     return ForwardRefForceGraph2D;
@@ -67,7 +65,6 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
-  const [visibleNodes, setVisibleNodes] = useState<Node[]>([]);
   const graphRef = useRef<SpecificForceGraphMethods>(null);
 
   const pageTypeColors = useMemo(() => {
@@ -94,14 +91,6 @@ const InteractiveCrawlMap: React.FC = () => {
     });
     return colorMap;
   }, [allPageTypes]);
-
-  const handleEngineStop = useCallback(() => {
-    if (graphRef.current) {
-      const graphData = graphRef.current.graphData();
-      setVisibleNodes(graphData.nodes);
-    }
-  }, []);
-
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -511,12 +500,11 @@ const InteractiveCrawlMap: React.FC = () => {
         nodeCanvasObject={nodeCanvasObject}
         linkDirectionalParticles={0}
         cooldownTicks={100}
-        onEngineStop={handleEngineStop}
       />
           </div>
 
           {selectedNode && showNodeInfo && (
-        <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
+            <div className="mt-4 p-4 bg-gray-800 text-white border-l-4 border-blue-500">
               <h3 className="font-bold">Selected Node Information</h3>
               <p><strong>URL:</strong> {selectedNode.fullUrl}</p>
               <p><strong>Depth:</strong> {selectedNode.depth}</p>
