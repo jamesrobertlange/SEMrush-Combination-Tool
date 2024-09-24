@@ -68,7 +68,6 @@ const InteractiveCrawlMap: React.FC = () => {
   const [showDomainFilter, setShowDomainFilter] = useState(false);
   const [showPageTypeFilter, setShowPageTypeFilter] = useState(false);
   const [showNodeInfo, setShowNodeInfo] = useState(true);
-  const [visibleNodes, setVisibleNodes] = useState<Node[]>([]);
   const graphRef = useRef<ForceGraphMethods>(null);
 
   const pageTypeColors = useMemo(() => {
