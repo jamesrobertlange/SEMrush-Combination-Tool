@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef, MutableRefObject } from 'react';
 import dynamic from 'next/dynamic';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { ForceGraphMethods, ForceGraphProps, NodeObject, LinkObject } from 'react-force-graph-2d';
@@ -23,7 +23,7 @@ const ForceGraph2D = dynamic(() =>
   import('react-force-graph-2d').then(mod => {
     const ForwardRefForceGraph2D = React.forwardRef<SpecificForceGraphMethods, ForceGraphProps<Node, Link>>((props, ref) => {
       const Comp = mod.default;
-      return <Comp {...props} ref={ref} />;
+      return <Comp {...props} ref={ref as MutableRefObject<SpecificForceGraphMethods | undefined>} />;
     });
     ForwardRefForceGraph2D.displayName = 'ForwardRefForceGraph2D';
     return ForwardRefForceGraph2D;
